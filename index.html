@@ -1,1 +1,303 @@
-print hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gateway Games</title>
+
+  <!-- Lucide Icons for clean, textless sidebar icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Lumin SDK Script Injection -->
+  <script src="https://luminsdk.com/sdk.js" async defer></script>
+
+  <style>
+    :root {
+      --bg-color: #0d0f12;
+      --sidebar-bg: #14171d;
+      --card-bg: #1e222b;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Icon-Only Sidebar */
+    aside {
+      width: 70px;
+      background-color: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      border-right: 1px solid #2d3139;
+    }
+
+    .brand-logo {
+      margin-bottom: 30px;
+      color: var(--accent);
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background-color: var(--accent);
+      color: #fff;
+    }
+
+    /* Main Container (Centered Library Layout) */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .search-bar {
+      background-color: var(--card-bg);
+      border: 1px solid #2d3139;
+      border-radius: 20px;
+      padding: 8px 16px;
+      color: var(--text);
+      width: 250px;
+      outline: none;
+    }
+
+    /* Centered Games Grid */
+    .games-grid {
+      width: 100%;
+      max-width: 1000px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid #2d3139;
+    }
+
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    .game-thumb {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      background-color: #2a2e37;
+    }
+
+    .game-info {
+      padding: 12px;
+    }
+
+    .game-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .game-category {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Game Modal Frame */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 90%;
+      height: 90%;
+      background: var(--bg-color);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Textless Sidebar -->
+  <aside>
+    <div class="brand-logo">
+      <i data-lucide="gamepad-2"></i>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-btn active" title="Home"><i data-lucide="home"></i></button>
+      <button class="nav-btn" title="Trending"><i data-lucide="flame"></i></button>
+
+      <button class="nav-btn" title="Library"><i data-lucide="library"></i></button>
+      <button class="nav-btn" title="Settings"><i data-lucide="settings"></i></button>
+    </nav>
+  </aside>
+
+  <!-- Center-Aligned Games Library -->
+  <main>
+    <header>
+      <h1>Gateway Games</h1>
+      <input type="text" class="search-bar" placeholder="Search games..." id="searchInput">
+    </header>
+
+    <div class="games-grid" id="gamesGrid">
+      <!-- Games load dynamically -->
+    </div>
+  </main>
+
+  <!-- Fullscreen Embed Modal -->
+  <div class="modal" id="gameModal">
+    <div class="modal-content">
+      <button class="close-btn" id="closeModal"><i data-lucide="x"></i></button>
+
+      <iframe id="gameFrame" src=""></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Sample Game Dataset (Integrates with Lumin SDK structure)
+    const games = [
+      { id: '1', title: 'Slope', category: 'Arcade', image: 'https://via.placeholder.com/200x140', embedUrl: 'https://luminsdk.com/embed/slope' },
+      { id: '2', title: 'Retro Bowl', category: 'Sports', image: 'https://via.placeholder.com/200x140', embedUrl: 'https://luminsdk.com/embed/retro-bowl' },
+      { id: '3', title: 'Cluster Rush', category: 'Action', image: 'https://via.placeholder.com/200x140', embedUrl: 'https://luminsdk.com/embed/cluster-rush' },
+      { id: '4', title: '1v1.LOL', category: 'Shooter', image: 'https://via.placeholder.com/200x140', embedUrl: 'https://luminsdk.com/embed/1v1-lol' }
+    ];
+
+    const gamesGrid = document.getElementById('gamesGrid');
+    const modal = document.getElementById('gameModal');
+    const gameFrame = document.getElementById('gameFrame');
+    const closeModal = document.getElementById('closeModal');
+
+    // Render Games
+    function renderGames(items) {
+      gamesGrid.innerHTML = '';
+      items.forEach(game => {
+        const card = document.createElement('div');
+        card.className = 'game-card';
+        card.innerHTML = `
+          <img class="game-thumb" src="${game.image}" alt="${game.title}">
+          <div class="game-info">
+            <div class="game-title">${game.title}</div>
+            <div class="game-category">${game.category}</div>
+
+          </div>
+        `;
+        card.addEventListener('click', () => openGame(game.embedUrl));
+        gamesGrid.appendChild(card);
+      });
+    }
+
+    function openGame(url) {
+      gameFrame.src = url;
+      modal.classList.add('active');
+      
+      // Lumin SDK hook (if initialized)
+      if (window.LuminSDK) {
+        window.LuminSDK.trackGameStart(url);
+      }
+    }
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('active');
+      gameFrame.src = '';
+    });
+
+    // Simple Search Filter
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const filtered = games.filter(g => g.title.toLowerCase().includes(query));
+      renderGames(filtered);
+    });
+
+    // Initial Render
+    renderGames(games);
+  </script>
+</body>
+</html>
