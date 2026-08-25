@@ -38,7 +38,7 @@ async function fetchLuminGames() {
     console.error("Error fetching LuminSDK games:", error);
     // Fallback static list if GitHub API rate limit is reached
     renderGames([
-      { name: "Slope", image: `${RAW_BASE}slope/slope.png`, url: `${SITE_BASE}slope/` },
+      { name: "Slope", image: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7ynOWNdI9yS3ylwKjb8aAWui4_pMKb_6PPBSvNe7sgg&s=10`, url: `slope.html` },
       { name: "Retro Bowl", image: `${RAW_BASE}retro-bowl/img.png`, url: `${SITE_BASE}retro-bowl/` },
       { name: "1v1.LOL", image: `${RAW_BASE}1v1/img.png`, url: `${SITE_BASE}1v1/` },
       { name: "Subway Surfers", image: `${RAW_BASE}subway-surfers/img.png`, url: `${SITE_BASE}subway-surfers/` }
